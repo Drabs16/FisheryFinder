@@ -1,0 +1,103 @@
+<!--
+  Fishery Finder — szablon e-maila „Confirm signup"
+  Wklej do: Supabase Dashboard → Authentication → Emails → Confirm signup → Message body (HTML)
+  Temat (Subject): Potwierdź adres e-mail — Fishery Finder
+  Zmienne GoTrue: {{ .ConfirmationURL }} (link potwierdzający), {{ .Email }}
+-->
+<!DOCTYPE html>
+<html lang="pl" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light only" />
+  <title>Potwierdź adres e-mail</title>
+</head>
+<body style="margin:0; padding:0; background-color:#F1F5F3; -webkit-font-smoothing:antialiased;">
+  <!-- preheader (ukryty podgląd) -->
+  <div style="display:none; max-height:0; overflow:hidden; opacity:0; color:#F1F5F3;">
+    Potwierdź swój adres e-mail, aby aktywować konto Fishery Finder.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F1F5F3;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px; max-width:100%; background-color:#FFFFFF; border-radius:18px; overflow:hidden; box-shadow:0 6px 24px rgba(16,24,40,0.08); font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+
+          <!-- Nagłówek (marka) -->
+          <tr>
+            <td style="background-color:#1B4332; padding:28px 32px;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:#FFFFFF; border-radius:10px; padding:6px; line-height:0;">
+                    <img src="https://fisheryfinder.pl/logo-fish.png" width="30" height="30" alt="Fishery Finder" style="display:block; width:30px; height:30px;" />
+                  </td>
+                  <td style="padding-left:12px; font-size:19px; font-weight:800; letter-spacing:0.5px; color:#FFFFFF;">
+                    FISHERY <span style="color:#52B788;">FINDER</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Treść -->
+          <tr>
+            <td style="padding:36px 32px 8px 32px;">
+              <h1 style="margin:0 0 14px 0; font-size:24px; line-height:1.25; color:#1A1A2E; font-weight:800;">
+                Potwierdź swój adres e-mail
+              </h1>
+              <p style="margin:0 0 8px 0; font-size:15px; line-height:1.6; color:#4B5563;">
+                Dziękujemy za utworzenie konta w&nbsp;<strong style="color:#1B4332;">Fishery&nbsp;Finder</strong>.
+                Aby aktywować konto i&nbsp;móc się zalogować, potwierdź swój adres e-mail przyciskiem poniżej.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Przycisk (bulletproof) -->
+          <tr>
+            <td align="center" style="padding:22px 32px 8px 32px;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" bgcolor="#52B788" style="border-radius:12px;">
+                    <a href="{{ .ConfirmationURL }}" target="_blank"
+                       style="display:inline-block; padding:15px 34px; font-size:16px; font-weight:800; color:#0E2B1E; text-decoration:none; border-radius:12px;">
+                      Potwierdź e-mail
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Link awaryjny -->
+          <tr>
+            <td style="padding:18px 32px 28px 32px;">
+              <p style="margin:0 0 6px 0; font-size:12.5px; line-height:1.5; color:#6B7280;">
+                Przycisk nie działa? Skopiuj i wklej ten adres do przeglądarki:
+              </p>
+              <p style="margin:0; font-size:12.5px; line-height:1.5; word-break:break-all;">
+                <a href="{{ .ConfirmationURL }}" target="_blank" style="color:#2D6A4F;">{{ .ConfirmationURL }}</a>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Separator -->
+          <tr><td style="padding:0 32px;"><div style="height:1px; background-color:#E8EBEA;"></div></td></tr>
+
+          <!-- Stopka -->
+          <tr>
+            <td style="padding:22px 32px 30px 32px;">
+              <p style="margin:0 0 10px 0; font-size:12.5px; line-height:1.55; color:#9CA3AF;">
+                Jeśli to nie Ty zakładałeś konto, zignoruj tę wiadomość — nic się nie stanie.
+              </p>
+              <p style="margin:0; font-size:12px; line-height:1.55; color:#9CA3AF;">
+                © Fishery Finder · <a href="https://fisheryfinder.pl" style="color:#2D6A4F; text-decoration:none;">fisheryfinder.pl</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

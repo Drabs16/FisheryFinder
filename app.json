@@ -1,0 +1,73 @@
+{
+  "expo": {
+    "name": "FisheryFinder",
+    "slug": "FisheryFinder",
+    "version": "1.0.0",
+    "scheme": "fisheryfinder",
+    "orientation": "portrait",
+    "icon": "./assets/ff-icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/ff-splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1B4332"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.drabss.fisheryfinder",
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Fishery Finder używa Twojej lokalizacji, aby pokazać łowiska w pobliżu i Twoje aktualne miasto.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/ff-adaptive.png",
+        "backgroundColor": "#1B4332"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
+      "package": "com.drabss.fisheryfinder"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Fishery Finder używa Twojej lokalizacji, aby pokazać łowiska w pobliżu i Twoje aktualne miasto."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Fishery Finder potrzebuje dostępu do zdjęć, aby dodać fotkę złowionej ryby do raportu połowu.",
+          "cameraPermission": "Fishery Finder potrzebuje dostępu do aparatu, aby zrobić zdjęcie złowionej ryby."
+        }
+      ],
+      "expo-font"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "735ab751-c82b-4890-82b8-0afaa92f34cd"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/735ab751-c82b-4890-82b8-0afaa92f34cd"
+    }
+  }
+}

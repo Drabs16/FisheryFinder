@@ -1,0 +1,4 @@
+# nie commitujemy plików zdjęć ani folderów łowisk — to tylko staging do uploadu
+*
+!.gitignore
+!README.md

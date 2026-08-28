@@ -1,0 +1,23 @@
+{
+  "name": "fisheryfinder-site",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n web,panel,admin -c green,cyan,magenta \"npm:dev:web\" \"npm:dev:panel\" \"npm:dev:admin\"",
+    "dev:web": "npm run dev -w fishery-finder-web",
+    "dev:panel": "npm run dev -w fishery-finder-business",
+    "build": "npm run build -w fishery-finder-web && npm run build -w fishery-finder-business",
+    "build:web": "npm run build -w fishery-finder-web",
+    "build:panel": "npm run build -w fishery-finder-business",
+    "typecheck": "npm run typecheck -w fishery-finder-web && npm run typecheck -w fishery-finder-business",
+    "dev:admin": "npm run dev -w fishery-finder-admin",
+    "build:admin": "npm run build -w fishery-finder-admin"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "site/apps/web", "run", "dev"],
+      "port": 5173
+    },
+    {
+      "name": "web-verify",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "--port", "5181", "--strictPort", "site/apps/web"],
+      "port": 5181
+    },
+    {
+      "name": "panel",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "site/apps/panel", "run", "dev"],
+      "port": 5174
+    }
+  ]
+}
