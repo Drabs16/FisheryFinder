@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { PANEL_URL } from '../lib/constants';
@@ -15,7 +15,7 @@ function formatPlPhone(input: string): string {
 const phoneDigits = (v: string) => v.replace(/\D/g, '').replace(/^48/, '');
 
 export default function Register() {
-  const { signUp } = useAuth();
+  const { signUp, resendConfirmation } = useAuth();
   const nav = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -24,21 +24,65 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [err, setErr] = useState('');
-  const [ok, setOk] = useState('');
   const [busy, setBusy] = useState(false);
+  // Po rejestracji wymagającej potwierdzenia — pokazujemy ekran „Sprawdź skrzynkę"
+  const [sent, setSent] = useState<string | null>(null);
+  const [resendMsg, setResendMsg] = useState('');
+  const [resendBusy, setResendBusy] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
 
   const submit = async (e: FormEvent) => {
-    e.preventDefault(); setErr(''); setOk('');
+    e.preventDefault(); setErr('');
     if (phoneDigits(phone).length !== 9) { setErr('Podaj poprawny numer telefonu (9 cyfr).'); return; }
     if (!name.trim().includes(' ')) { setErr('Podaj imię i nazwisko.'); return; }
     setBusy(true);
     try {
       const { needsConfirm } = await signUp(email.trim(), password, name.trim(), phone.trim(), city.trim());
-      if (needsConfirm) setOk('Konto utworzone! Wysłaliśmy link na Twój e-mail — potwierdź adres, aby się zalogować.');
+      if (needsConfirm) { setSent(email.trim()); setCooldown(45); }
       else nav('/');
     } catch (e) { setErr(e instanceof Error ? e.message : 'Nie udało się utworzyć konta'); }
     finally { setBusy(false); }
   };
+
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const t = setInterval(() => setCooldown((c) => (c <= 1 ? 0 : c - 1)), 1000);
+    return () => clearInterval(t);
+  }, [cooldown]);
+
+  const resend = async () => {
+    if (!sent || cooldown > 0 || resendBusy) return;
+    setResendBusy(true); setResendMsg('');
+    try { await resendConfirmation(sent); setResendMsg('Wysłaliśmy link jeszcze raz. Sprawdź skrzynkę (i folder spam).'); setCooldown(45); }
+    catch (e) { setResendMsg(e instanceof Error ? e.message : 'Nie udało się wysłać ponownie.'); }
+    finally { setResendBusy(false); }
+  };
+
+  // Ekran po rejestracji — „Sprawdź skrzynkę"
+  if (sent) {
+    return (
+      <div className="auth-page">
+        <div className="auth-card" style={{ textAlign: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
+            <span style={{ width: 64, height: 64, borderRadius: '50%', background: 'var(--ff-green-50)', display: 'grid', placeItems: 'center' }}>
+              <Icon name="mail" size={28} color="var(--ff-primary)" />
+            </span>
+          </div>
+          <h1>Sprawdź swoją skrzynkę</h1>
+          <div className="muted">Wysłaliśmy link potwierdzający na adres<br /><b style={{ color: 'var(--ff-text)' }}>{sent}</b>. Kliknij go, aby aktywować konto i się zalogować.</div>
+          <div className="notice" style={{ marginTop: 16, textAlign: 'left' }}>
+            <Icon name="fish" size={15} color="var(--ff-primary)" /> Nie widzisz maila? Zajrzyj do folderu <b>spam</b> — czasem tam trafia.
+          </div>
+          {resendMsg && <div className="notice ok" style={{ marginTop: 12 }}>{resendMsg}</div>}
+          <button className="btn block" style={{ marginTop: 16 }} onClick={resend} disabled={cooldown > 0 || resendBusy}>
+            {resendBusy ? 'Wysyłanie…' : cooldown > 0 ? `Wyślij ponownie (${cooldown}s)` : 'Wyślij link ponownie'}
+          </button>
+          <div className="switch" style={{ marginTop: 12 }}>Adres wpisany błędnie? <button type="button" onClick={() => { setSent(null); setResendMsg(''); }} style={{ background: 'none', border: 'none', color: 'var(--ff-primary)', fontWeight: 700, cursor: 'pointer', padding: 0, font: 'inherit' }}>Popraw dane</button></div>
+          <div className="switch" style={{ marginTop: 6 }}>Potwierdziłeś już konto? <Link to="/login">Zaloguj się</Link></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="auth-page">
@@ -47,7 +91,6 @@ export default function Register() {
         <h1>Załóż konto wędkarza</h1>
         <div className="muted">Jedno konto — strona i aplikacja mobilna. Rezerwuj łowiska i zapisuj ulubione.</div>
         {err && <div className="notice err">{err}</div>}
-        {ok && <div className="notice ok">{ok}</div>}
         <form onSubmit={submit}>
           <div className="field"><label>Imię i nazwisko *</label>
             <div className="input-ic"><span className="iic"><Icon name="user" size={17} /></span>

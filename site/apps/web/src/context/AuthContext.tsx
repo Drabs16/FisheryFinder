@@ -11,9 +11,14 @@ interface AuthState {
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, name: string, phone: string, city?: string) => Promise<{ needsConfirm: boolean }>;
+  resendConfirmation: (email: string) => Promise<void>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
+
+// Dokąd wracamy po kliknięciu w link potwierdzający — zawsze bieżący origin
+// (localhost w devie, fisheryfinder.pl na produkcji). Musi być na liście Redirect URLs w Supabase.
+const emailRedirectTo = typeof window !== 'undefined' ? `${window.location.origin}/` : undefined;
 
 const Ctx = createContext<AuthState | undefined>(undefined);
 
@@ -46,14 +51,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error) throw error;
   };
   const signUp = async (email: string, password: string, name: string, phone: string, city = '') => {
-    const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { name, phone, city: city || null, role: 'angler' } } });
+    const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { name, phone, city: city || null, role: 'angler' }, emailRedirectTo } });
     if (error) throw error;
     return { needsConfirm: !data.session };
+  };
+  const resendConfirmation = async (email: string) => {
+    const { error } = await supabase.auth.resend({ type: 'signup', email, options: { emailRedirectTo } });
+    if (error) throw error;
   };
   const signOut = async () => { await supabase.auth.signOut(); };
 
   return (
-    <Ctx.Provider value={{ session, user: session?.user ?? null, profile, loading, signIn, signUp, signOut, refreshProfile }}>
+    <Ctx.Provider value={{ session, user: session?.user ?? null, profile, loading, signIn, signUp, resendConfirmation, signOut, refreshProfile }}>
       {children}
     </Ctx.Provider>
   );
