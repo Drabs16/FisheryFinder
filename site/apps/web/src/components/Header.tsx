@@ -20,7 +20,7 @@ export default function Header() {
 
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 40, background: 'var(--ff-primary)', height: 'var(--ff-header-height)', display: 'flex', alignItems: 'center' }}>
-      <div style={{ width: '100%', maxWidth: 'var(--ff-container)', margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', gap: 22 }}>
+      <div className="ff-hdr-inner" style={{ width: '100%', maxWidth: 'var(--ff-container)', margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', gap: 22 }}>
         <Link to="/" className="brand">
           <img src="/logo-fish.png" alt="" />
           <span><span className="g">FISHERY </span><span className="w">FINDER</span></span>
@@ -51,8 +51,8 @@ export default function Header() {
             </>
           ) : (
             <>
-              <Link to="/login" style={{ padding: '9px 16px', borderRadius: 'var(--ff-radius-pill)', border: '1px solid rgba(255,255,255,0.28)', color: '#fff', fontWeight: 700, fontSize: 14 }}>Zaloguj</Link>
-              <Link to="/rejestracja" style={{ padding: '10px 18px', borderRadius: 'var(--ff-radius-pill)', background: 'var(--ff-accent)', color: 'var(--ff-primary)', fontWeight: 800, fontSize: 14 }}>Załóż konto</Link>
+              <Link to="/login" className="hdr-login" style={{ padding: '9px 16px', borderRadius: 'var(--ff-radius-pill)', border: '1px solid rgba(255,255,255,0.28)', color: '#fff', fontWeight: 700, fontSize: 14 }}>Zaloguj</Link>
+              <Link to="/rejestracja" className="hdr-signup" style={{ padding: '10px 18px', borderRadius: 'var(--ff-radius-pill)', background: 'var(--ff-accent)', color: 'var(--ff-primary)', fontWeight: 800, fontSize: 14 }}>Załóż konto</Link>
             </>
           )}
         </div>

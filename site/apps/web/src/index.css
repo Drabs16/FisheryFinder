@@ -64,7 +64,12 @@
   .ffd-catchgrid { grid-template-columns: repeat(2, 1fr) !important; }
   .ffd-amen { grid-template-columns: 1fr !important; }
 }
-@media (max-width: 760px) { .ff-hdr-lbl { display: none; } .ff-hdr-nav { gap: 2px !important; } }
+@media (max-width: 940px) { .ff-hdr-lbl { display: none; } .ff-hdr-nav { gap: 2px !important; } }
+/* Wąskie ekrany: chowamy „Załóż konto" (zostaje „Zaloguj"; rejestracja dostępna ze strony logowania i stopki) */
+@media (max-width: 620px) {
+  .hdr-signup { display: none !important; }
+  .ff-hdr-inner { padding: 0 12px !important; gap: 8px !important; }
+}
 * { box-sizing: border-box; }
 html, body, #root { margin: 0; min-height: 100%; }
 html { scroll-behavior: smooth; }
@@ -252,8 +257,15 @@ input, select, textarea { font-family: inherit; }
 .pg-gap { min-width: 24px; text-align: center; color: var(--ff-text-tertiary); font-weight: 800; user-select: none; }
 @media (max-width: 640px) { .pg-btn { min-width: 36px; height: 36px; font-size: 13.5px; } }
 
+/* ---------- Home: wyszukiwarka — zawijanie na telefonie/tablecie ---------- */
+@media (max-width: 640px) {
+  .home-search-row { flex-direction: column; }
+  .home-search-row > button { max-width: none !important; width: 100%; justify-content: center; }
+}
+
 /* ---------- Fishery card ---------- */
-.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 18px; padding-bottom: 40px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; padding-bottom: 40px; }
+@media (max-width: 460px) { .cards { grid-template-columns: 1fr; } }
 .fcard { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(16,24,40,0.08); cursor: pointer; transition: transform .12s, box-shadow .12s; display: block; }
 .fcard:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(16,24,40,0.12); }
 .fcard .imgwrap { position: relative; height: 168px; background: var(--accent-light); }

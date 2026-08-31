@@ -336,6 +336,17 @@ export default function FisheryDetail() {
               <div ref={mapEl} style={{ height: 280, borderRadius: 'var(--ff-radius-lg)', overflow: 'hidden', border: '1px solid var(--ff-border)' }} />
               <a className="ffd-nav" href={navUrl} target="_blank" rel="noreferrer" style={{ ...softBtn, marginTop: 12, display: 'inline-flex' }}><Icon name="navigate" size={16} color={colors.primary} /> Nawiguj</a>
             </Section>
+
+            {/* Kanał zgłoszeń (notice & takedown): nieprawidłowe zdjęcie / dane / naruszenie praw */}
+            <div style={{ marginTop: 30, paddingTop: 16, borderTop: '1px solid var(--ff-border)', fontSize: 13, color: 'var(--ff-text-tertiary)', maxWidth: 560 }}>
+              Nieprawidłowe zdjęcie, błędne dane lub naruszenie praw?{' '}
+              <a
+                href={`mailto:kontakt@fisheryfinder.pl?subject=${encodeURIComponent(`Zgłoszenie naruszenia — ${f.name}`)}&body=${encodeURIComponent(`Łowisko: ${f.name} (id: ${f.id})\nAdres: ${typeof window !== 'undefined' ? window.location.href : ''}\n\nOpisz zgłoszenie (np. zdjęcie, treść, dane osobowe):\n`)}`}
+                style={{ color: 'var(--ff-primary)', fontWeight: 700 }}
+              >
+                Zgłoś to łowisko
+              </a>
+            </div>
           </div>
 
           {/* sticky karta rezerwacji */}

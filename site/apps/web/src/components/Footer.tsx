@@ -33,6 +33,7 @@ export default function Footer() {
           <Link to="/kontakt">Kontakt</Link>
           <Link to="/regulamin">Regulamin</Link>
           <Link to="/polityka-prywatnosci">Polityka prywatności</Link>
+          <a href={`mailto:kontakt@fisheryfinder.pl?subject=${encodeURIComponent('Zgłoszenie naruszenia')}`}>Zgłoś naruszenie</a>
         </div>
       </div>
       <div className="footer-bottom">
