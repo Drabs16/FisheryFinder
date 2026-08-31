@@ -6,7 +6,7 @@ import SkeletonCard from '../components/SkeletonCard';
 import Calendar from '../components/Calendar';
 import FilterSheet, { type FilterValues, EMPTY_FILTERS, activeFilterCount } from '../components/FilterSheet';
 import { fetchFisheriesPage, fetchFisheriesCount, fetchTakenCounts, type FisheryQuery } from '../lib/fisheries';
-import { fmtShort, haversineKm, pluralFisheries, todayIso, AMENITY_OPTIONS } from '../lib/constants';
+import { fmtShort, haversineKm, pluralFisheries, todayIso, AMENITY_OPTIONS, PANEL_URL } from '../lib/constants';
 import { SORT_OPTIONS, type Fishery } from '../lib/types';
 import { colors } from '../theme';
 
@@ -130,19 +130,32 @@ export default function Home() {
 
   return (
     <>
-    <section style={{ background: 'var(--ff-gradient-hero)', color: '#fff', padding: 'clamp(40px, 6vw, 62px) clamp(16px, 3vw, 28px) clamp(92px, 9vw, 116px)' }}>
-      <div style={{ maxWidth: 'var(--ff-container)', margin: '0 auto' }}>
-        <h1 style={{ font: 'var(--ff-weight-extra) clamp(30px, 4.6vw, 52px)/1.06 var(--font-brand)', letterSpacing: '-0.02em', margin: 0, maxWidth: 760 }}>
-          Wszystkie łowiska w Polsce.<br /><span style={{ color: '#95D5B2' }}>Partnerskie rezerwujesz online.</span>
-        </h1>
-        <p style={{ fontSize: 17, lineHeight: 1.6, color: 'rgba(255,255,255,0.85)', margin: '18px 0 0', maxWidth: 620 }}>
-          Przeglądaj i porównuj łowiska z całego kraju w jednym miejscu. W partnerskich sprawdzisz wolne stanowiska na wybrany dzień i zarezerwujesz online.
-        </p>
-        <div style={{ display: 'flex', gap: 26, marginTop: 22, flexWrap: 'wrap' }}>
-          {[['fish', 'Setki łowisk z całej Polski'], ['calendar', 'Rezerwacja online u partnerów'], ['check', 'Realna dostępność stanowisk']].map(([ic, t]) => (
-            <span key={t} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 14.5, fontWeight: 600, color: 'rgba(255,255,255,0.92)' }}><Icon name={ic as IconName} size={17} color="#95D5B2" /> {t}</span>
-          ))}
+    <section className="home-hero">
+      <div className="hero-fish" aria-hidden="true">
+        {[1, 2, 3, 4, 5, 6].map((i) => <img key={i} src="/logo-fish.png" alt="" className={`hf hf-${i}`} />)}
+      </div>
+      <div className="hero-inner">
+        <div className="hero-copy">
+          <span className="hero-eyebrow">Wędkarski marketplace #1 w Polsce</span>
+          <h1 className="hero-h1">Znajdź, porównaj i&nbsp;zarezerwuj łowisko <span className="hl">— online.</span></h1>
+          <p className="hero-sub">
+            Setki łowisk komercyjnych, sklepów wędkarskich i&nbsp;wód PZW na jednej mapie. W&nbsp;łowiskach partnerskich sprawdzisz realną dostępność stanowisk i&nbsp;zarezerwujesz miejsce — bez telefonów i&nbsp;zeszytów.
+          </p>
+          <div className="hero-trust">
+            {[['fish', 'Cała Polska w jednym miejscu'], ['calendar', 'Rezerwacja online u partnerów'], ['check', 'Realna dostępność stanowisk']].map(([ic, t]) => (
+              <span key={t}><Icon name={ic as IconName} size={17} color="#95D5B2" /> {t}</span>
+            ))}
+          </div>
         </div>
+        <aside className="hero-owner">
+          <div className="ho-card">
+            <span className="ho-ic"><img src="/logo-fish.png" alt="" /></span>
+            <div className="ho-title">Masz łowisko?</div>
+            <p className="ho-desc">Dołącz do marketplace, przyjmuj rezerwacje online i&nbsp;docieraj do wędkarzy z&nbsp;całej Polski.</p>
+            <a className="ho-btn" href={`${PANEL_URL}/register`} target="_blank" rel="noreferrer">Załóż konto właściciela →</a>
+            <a className="ho-link" href={PANEL_URL} target="_blank" rel="noreferrer">Mam już konto właściciela</a>
+          </div>
+        </aside>
       </div>
     </section>
 

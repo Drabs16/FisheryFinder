@@ -49,6 +49,8 @@ export default function MapPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const poiPoolRef = useRef<Record<string, { marker: any; pin: HTMLElement }>>({});
   const layersRef = useRef(layers);
+  // Gdy aktywny jest filtr gatunku ryby — chowamy POI (PZW/sklepy nie mają gatunków, myliłyby wynik)
+  const fishActiveRef = useRef(false);
   const poiAbortRef = useRef<AbortController | null>(null);
   const poiTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const selPoiRef = useRef<string | null>(null);
@@ -264,6 +266,7 @@ export default function MapPage() {
   const runPoiFetch = () => {
     const map = mapRef.current;
     if (!map || !map.getBounds) return;
+    if (fishActiveRef.current) { clearPoiMarkers(); setPoiHint(''); setSelectedPoi(null); return; }
     const kinds: PoiKind[] = [];
     if (layersRef.current.pzw) kinds.push('pzw');
     if (layersRef.current.shop) kinds.push('shop');
@@ -317,6 +320,9 @@ export default function MapPage() {
     }
     pushData();
     syncHtmlMarkers();
+    // filtr gatunku aktywny → schowaj POI; wyczyszczony → przywróć
+    const fishNow = filters.fish.length > 0;
+    if (fishNow !== fishActiveRef.current) { fishActiveRef.current = fishNow; runPoiFetch(); }
     if (mg && map && !fitOnce.current && filtered.length) {
       const bounds = new mg.LngLatBounds();
       filtered.forEach((f) => { if (f.latitude && f.longitude) bounds.extend([f.longitude, f.latitude]); });

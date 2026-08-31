@@ -1313,3 +1313,47 @@ input, select, textarea { font-family: inherit; }
 .af-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px 6px 12px;border-radius:999px;border:1px solid var(--ff-border);background:var(--ff-green-50);color:var(--ff-primary);font-size:13px;font-weight:700;cursor:pointer}
 .af-chip:hover{background:var(--ff-green-100,#D8EFE0)}
 .af-clear{border:none;background:none;color:var(--ff-text-secondary);font-size:13px;font-weight:700;cursor:pointer;text-decoration:underline;padding:6px 4px}
+
+/* ============ Hero (marketplace) ============ */
+.home-hero { position: relative; overflow: hidden; background: var(--ff-gradient-hero); color: #fff; padding: clamp(40px, 6vw, 66px) clamp(16px, 3vw, 28px) clamp(92px, 9vw, 116px); }
+.hero-inner { position: relative; z-index: 2; max-width: var(--ff-container); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 44px; align-items: center; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-size: 12.5px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ff-accent-light); }
+.hero-eyebrow::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--ff-accent-light); box-shadow: 0 0 0 4px rgba(149,213,178,0.22); }
+.hero-h1 { font: var(--ff-weight-extra) clamp(30px, 4.4vw, 50px)/1.07 var(--font-brand); letter-spacing: -0.02em; margin: 15px 0 0; max-width: 640px; text-wrap: balance; }
+.hero-h1 .hl { color: var(--ff-accent-light); }
+.hero-sub { font-size: clamp(15px, 1.6vw, 17.5px); line-height: 1.6; color: rgba(255,255,255,0.86); margin: 18px 0 0; max-width: 580px; }
+.hero-trust { display: flex; gap: 22px; margin-top: 24px; flex-wrap: wrap; }
+.hero-trust span { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.92); }
+
+/* Karta CTA dla właścicieli */
+.hero-owner { justify-self: end; width: 100%; max-width: 340px; }
+.ho-card { background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.17); border-radius: 20px; padding: 24px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 18px 40px rgba(0,0,0,0.22); }
+.ho-ic { width: 48px; height: 48px; border-radius: 13px; background: #fff; display: grid; place-items: center; margin-bottom: 15px; }
+.ho-ic img { width: 30px; height: 30px; object-fit: contain; }
+.ho-title { font-size: 19px; font-weight: 800; letter-spacing: -0.01em; }
+.ho-desc { font-size: 13.5px; line-height: 1.55; color: rgba(255,255,255,0.82); margin: 7px 0 18px; }
+.ho-btn { display: block; text-align: center; padding: 13px 18px; border-radius: 12px; background: var(--ff-accent); color: var(--ff-primary); font-weight: 800; font-size: 15px; box-shadow: 0 8px 20px rgba(82,183,136,0.35); transition: transform .15s var(--ff-ease-out), background .15s; }
+.ho-btn:hover { transform: translateY(-1px); background: var(--ff-accent-light); }
+.ho-link { display: block; text-align: center; margin-top: 11px; font-size: 13px; color: rgba(255,255,255,0.82); font-weight: 600; }
+.ho-link:hover { color: #fff; text-decoration: underline; }
+
+/* Pływające rybki z logo (dekoracja tła) */
+.hero-fish { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.hero-fish .hf { position: absolute; opacity: 0.16; filter: brightness(1.55) saturate(0.85); will-change: transform; }
+/* logo patrzy w prawo → ruch w prawo bez odbicia; ruch w lewo z scaleX(-1) — zawsze głową naprzód */
+@keyframes hf-swim { 0% { transform: translateX(-16vw) translateY(0); } 50% { transform: translateX(52vw) translateY(-16px); } 100% { transform: translateX(122vw) translateY(0); } }
+@keyframes hf-swim-rev { 0% { transform: translateX(122vw) translateY(0) scaleX(-1); } 50% { transform: translateX(52vw) translateY(14px) scaleX(-1); } 100% { transform: translateX(-16vw) translateY(0) scaleX(-1); } }
+.hf-1 { top: 14%; width: 62px; animation: hf-swim 36s linear infinite; }
+.hf-2 { top: 32%; width: 40px; opacity: 0.11; animation: hf-swim-rev 46s linear infinite; animation-delay: -9s; }
+.hf-3 { top: 58%; width: 84px; animation: hf-swim 42s linear infinite; animation-delay: -17s; }
+.hf-4 { top: 72%; width: 34px; opacity: 0.1; animation: hf-swim-rev 31s linear infinite; animation-delay: -23s; }
+.hf-5 { top: 46%; width: 50px; opacity: 0.13; animation: hf-swim 52s linear infinite; animation-delay: -30s; }
+.hf-6 { top: 86%; width: 66px; animation: hf-swim-rev 39s linear infinite; animation-delay: -5s; }
+
+@media (max-width: 860px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 26px; }
+  .hero-owner { justify-self: stretch; max-width: 460px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-fish .hf { animation: none !important; opacity: 0.08; }
+}
