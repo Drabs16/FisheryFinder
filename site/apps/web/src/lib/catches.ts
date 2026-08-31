@@ -70,9 +70,14 @@ function mapRow(r: any): CatchReport {
 
 const SELECT = 'id, fishery_id, species, weight, length_cm, spot_number, photo_url, caught_on, note, created_at, fisheries(name, city)';
 
-// Dziennik połowów zalogowanego wędkarza (RLS ogranicza do własnych)
+// Dziennik połowów zalogowanego wędkarza.
+// UWAGA: RLS ma też politykę „catch read public (hidden=false)" dla galerii na stronie łowiska,
+// więc SAMO RLS NIE ogranicza do własnych — musimy jawnie filtrować po user_id.
 export async function myCatches(): Promise<CatchReport[]> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return [];
   const { data, error } = await supabase.from('catch_reports').select(SELECT)
+    .eq('user_id', user.id)
     .order('caught_on', { ascending: false }).order('created_at', { ascending: false });
   if (error) throw error;
   return (data ?? []).map(mapRow);

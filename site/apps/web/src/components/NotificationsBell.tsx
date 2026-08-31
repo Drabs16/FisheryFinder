@@ -10,20 +10,21 @@ import Icon, { type IconName } from './Icon';
 //  - zaproszenia znajomych do tablic rywalizacji,
 //  - rezerwacje (potwierdzenie / oczekiwanie na właściciela),
 //  - ogłoszenia od nas (admin → announcements).
-// „Przeczytane" trzymamy lokalnie (per urządzenie) — badge liczy nieprzeczytane.
+// Kliknięcie powiadomienia je usuwa (dismiss, zapisane lokalnie). Badge = liczba nieusuniętych.
 
 interface Notif { id: string; icon: IconName; title: string; text?: string; to?: string; ts: number }
 interface Ann { id: string; title: string; body: string }
 
-const SEEN_KEY = 'ff:notifSeen';
-const getSeen = (): string[] => { try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '[]'); } catch { return []; } };
+const DISMISS_KEY = 'ff:notifDismissed';
+const getDismissed = (): string[] => { try { return JSON.parse(localStorage.getItem(DISMISS_KEY) || '[]'); } catch { return []; } };
+const saveDismissed = (ids: string[]) => { try { localStorage.setItem(DISMISS_KEY, JSON.stringify(ids)); } catch { /* ignore */ } };
 
 export default function NotificationsBell() {
   const { invites } = useInvites();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [anns, setAnns] = useState<Ann[]>([]);
   const [open, setOpen] = useState(false);
-  const [seen, setSeen] = useState<string[]>(getSeen);
+  const [dismissed, setDismissed] = useState<string[]>(getDismissed);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,14 +33,13 @@ export default function NotificationsBell() {
       .then(({ data }) => { if (Array.isArray(data)) setAnns(data as Ann[]); }, () => {});
   }, []);
 
-  // zamknij po kliknięciu poza panelem
   useEffect(() => {
     const onDoc = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
     document.addEventListener('mousedown', onDoc);
     return () => document.removeEventListener('mousedown', onDoc);
   }, []);
 
-  const items = useMemo<Notif[]>(() => {
+  const all = useMemo<Notif[]>(() => {
     const out: Notif[] = [];
     invites.forEach((iv) => out.push({
       id: `inv-${iv.id}`, icon: 'people', title: 'Zaproszenie do tablicy',
@@ -57,30 +57,30 @@ export default function NotificationsBell() {
       });
     });
     anns.forEach((a) => out.push({ id: `ann-${a.id}`, icon: 'fish', title: a.title, text: a.body, ts: Date.now() }));
-    return out.sort((a, b) => b.ts - a.ts).slice(0, 15);
+    return out.sort((a, b) => b.ts - a.ts).slice(0, 20);
   }, [invites, reservations, anns]);
 
-  const unread = items.filter((i) => !seen.includes(i.id)).length;
+  const items = useMemo(() => all.filter((i) => !dismissed.includes(i.id)), [all, dismissed]);
 
-  const toggle = () => {
-    const willOpen = !open;
-    setOpen(willOpen);
-    if (willOpen && items.length) {
-      const ids = items.map((i) => i.id);
-      localStorage.setItem(SEEN_KEY, JSON.stringify(ids));
-      setSeen(ids);
-    }
+  const dismiss = (id: string) => {
+    setDismissed((d) => { const next = d.includes(id) ? d : [...d, id]; saveDismissed(next); return next; });
+  };
+  const clearAll = () => {
+    setDismissed((d) => { const next = Array.from(new Set([...d, ...items.map((i) => i.id)])); saveDismissed(next); return next; });
   };
 
   return (
     <div className="notif-wrap" ref={ref}>
-      <button className="notif-btn" onClick={toggle} aria-label="Powiadomienia" aria-expanded={open}>
+      <button className="notif-btn" onClick={() => setOpen((o) => !o)} aria-label="Powiadomienia" aria-expanded={open}>
         <Icon name="bell" size={19} color="#fff" />
-        {unread > 0 && <span className="notif-badge">{unread > 9 ? '9+' : unread}</span>}
+        {items.length > 0 && <span className="notif-badge">{items.length > 9 ? '9+' : items.length}</span>}
       </button>
       {open && (
         <div className="notif-panel" role="menu">
-          <div className="notif-head">Powiadomienia</div>
+          <div className="notif-head">
+            <span>Powiadomienia</span>
+            {items.length > 0 && <button className="notif-clear" onClick={clearAll}>Wyczyść</button>}
+          </div>
           {items.length === 0 ? (
             <div className="notif-empty">
               <Icon name="bell" size={22} color="var(--ff-text-tertiary)" />
@@ -100,8 +100,8 @@ export default function NotificationsBell() {
                   </>
                 );
                 return i.to
-                  ? <Link key={i.id} to={i.to} className="notif-item" onClick={() => setOpen(false)}>{body}</Link>
-                  : <div key={i.id} className="notif-item">{body}</div>;
+                  ? <Link key={i.id} to={i.to} className="notif-item" onClick={() => { dismiss(i.id); setOpen(false); }}>{body}</Link>
+                  : <button key={i.id} type="button" className="notif-item" onClick={() => dismiss(i.id)}>{body}</button>;
               })}
             </div>
           )}

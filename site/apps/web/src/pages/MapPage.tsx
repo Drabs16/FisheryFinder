@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchAllFisheries, fetchTakenCounts } from '../lib/fisheries';
-import { fmtShort, haversineKm, todayIso, pluralFisheries, FISH_OPTIONS, nightsBetween, pluralDoby, cheapestStay, dobaPriceOf } from '../lib/constants';
+import { fmtShort, haversineKm, todayIso, FISH_OPTIONS, nightsBetween, pluralDoby, cheapestStay, dobaPriceOf } from '../lib/constants';
 import { matchCities } from '../lib/cities';
 import { fetchPois, type Poi, type PoiKind } from '../lib/poi';
 import Icon from '../components/Icon';
@@ -24,7 +24,6 @@ export default function MapPage() {
   const [dateFrom, setDateFrom] = useState<string | null>(null);
   const [dateTo, setDateTo] = useState<string | null>(null);
   const [selected, setSelected] = useState<Fishery | null>(null);
-  const [viewCount, setViewCount] = useState<number | null>(null);
   const [sugOpen, setSugOpen] = useState(false);
   const [layers, setLayers] = useState<{ pzw: boolean; shop: boolean }>({ pzw: true, shop: true });
   const [selectedPoi, setSelectedPoi] = useState<Poi | null>(null);
@@ -157,7 +156,7 @@ export default function MapPage() {
       });
       map.on('mouseenter', 'clusters', () => { map.getCanvas().style.cursor = 'pointer'; });
       map.on('mouseleave', 'clusters', () => { map.getCanvas().style.cursor = ''; });
-      map.on('moveend', () => { syncHtmlMarkers(); updateViewCount(); schedulePois(); });
+      map.on('moveend', () => { syncHtmlMarkers(); schedulePois(); });
       map.on('sourcedata', (e: any) => { if (e.sourceId === 'fish-src' && map.isSourceLoaded('fish-src')) syncHtmlMarkers(); });
       srcReady.current = true;
       pushData();
@@ -229,17 +228,6 @@ export default function MapPage() {
     });
   };
 
-  // licznik łowisk w aktualnym widoku mapy (aktualizowany przy ruchu i zmianie filtrów)
-  const updateViewCount = () => {
-    const map = mapRef.current;
-    if (!map || !map.getBounds) return;
-    const b = map.getBounds();
-    let n = 0;
-    for (const f of filteredRef.current) {
-      if (f.latitude && f.longitude && b.contains([f.longitude, f.latitude])) n++;
-    }
-    setViewCount(n);
-  };
 
   // ---------- Warstwy POI (łowiska PZW / sklepy wędkarskie) ----------
   const clearPoiMarkers = () => {
@@ -329,7 +317,6 @@ export default function MapPage() {
     }
     pushData();
     syncHtmlMarkers();
-    updateViewCount();
     if (mg && map && !fitOnce.current && filtered.length) {
       const bounds = new mg.LngLatBounds();
       filtered.forEach((f) => { if (f.latitude && f.longitude) bounds.extend([f.longitude, f.latitude]); });
@@ -423,12 +410,6 @@ export default function MapPage() {
         <span className="lg"><i className="poi-dot shop" /> Sklepy wędkarskie</span>
       </div>
 
-      {viewCount !== null && !selected && (
-        <div className={`map-areacount ${viewCount === 0 ? 'empty' : ''}`}>
-          <span className="dot" aria-hidden />
-          {viewCount > 0 ? <span><b>{viewCount}</b> {pluralFisheries(viewCount)} w tym obszarze</span> : <span>Brak łowisk tutaj — oddal mapę</span>}
-        </div>
-      )}
 
       {(layers.pzw || layers.shop) && poiHint && !selectedPoi && (
         <div className="poi-hint">

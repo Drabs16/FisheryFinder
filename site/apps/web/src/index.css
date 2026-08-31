@@ -77,13 +77,15 @@
 .notif-btn:hover { background: rgba(255,255,255,0.12); }
 .notif-badge { position: absolute; top: -3px; right: -3px; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 999px; background: var(--ff-accent); color: var(--ff-primary); font-size: 11px; font-weight: 800; display: grid; place-items: center; border: 2px solid var(--ff-primary); box-sizing: border-box; }
 .notif-panel { position: absolute; top: calc(100% + 10px); right: 0; width: 340px; max-width: calc(100vw - 24px); background: var(--ff-surface); border: 1px solid var(--ff-border); border-radius: 14px; box-shadow: 0 12px 34px rgba(16,24,40,0.2); overflow: hidden; z-index: 60; }
-.notif-head { padding: 14px 16px; font-weight: 800; font-size: 15px; color: var(--ff-text); border-bottom: 1px solid var(--ff-border); }
+.notif-head { padding: 14px 16px; font-weight: 800; font-size: 15px; color: var(--ff-text); border-bottom: 1px solid var(--ff-border); display: flex; align-items: center; justify-content: space-between; }
+.notif-clear { background: none; border: none; color: var(--ff-primary); font-weight: 700; font-size: 12.5px; cursor: pointer; padding: 0; }
+.notif-clear:hover { text-decoration: underline; }
 .notif-empty { padding: 30px 20px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; color: var(--ff-text-secondary); font-size: 14px; }
 .notif-empty small { font-size: 12px; color: var(--ff-text-tertiary); max-width: 250px; line-height: 1.5; }
 .notif-list { max-height: 380px; overflow-y: auto; }
-.notif-item { display: flex; gap: 11px; padding: 13px 16px; border-bottom: 1px solid var(--ff-border); text-decoration: none; transition: background .12s; }
+.notif-item { display: flex; gap: 11px; padding: 13px 16px; border: none; border-bottom: 1px solid var(--ff-border); text-decoration: none; transition: background .12s; width: 100%; text-align: left; background: none; font: inherit; cursor: pointer; }
 .notif-item:last-child { border-bottom: none; }
-a.notif-item:hover { background: var(--ff-surface-sunken); }
+.notif-item:hover { background: var(--ff-surface-sunken); }
 .notif-ic { flex-shrink: 0; width: 32px; height: 32px; border-radius: 9px; background: var(--ff-green-50); display: grid; place-items: center; }
 .notif-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .notif-title { font-size: 14px; font-weight: 700; color: var(--ff-text); }
