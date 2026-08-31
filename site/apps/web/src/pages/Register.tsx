@@ -25,6 +25,7 @@ export default function Register() {
   const [showPw, setShowPw] = useState(false);
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
+  const [agree, setAgree] = useState(false);
   // Po rejestracji wymagającej potwierdzenia — pokazujemy ekran „Sprawdź skrzynkę"
   const [sent, setSent] = useState<string | null>(null);
   const [resendMsg, setResendMsg] = useState('');
@@ -35,6 +36,7 @@ export default function Register() {
     e.preventDefault(); setErr('');
     if (phoneDigits(phone).length !== 9) { setErr('Podaj poprawny numer telefonu (9 cyfr).'); return; }
     if (!name.trim().includes(' ')) { setErr('Podaj imię i nazwisko.'); return; }
+    if (!agree) { setErr('Zaakceptuj Regulamin i Politykę prywatności, aby założyć konto.'); return; }
     setBusy(true);
     try {
       const { needsConfirm } = await signUp(email.trim(), password, name.trim(), phone.trim(), city.trim());
@@ -113,7 +115,11 @@ export default function Register() {
               <input className="input has-toggle" type={showPw ? 'text' : 'password'} required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="min. 6 znaków" autoComplete="new-password" />
               <button type="button" className="input-eye" onClick={() => setShowPw((s) => !s)} aria-label={showPw ? 'Ukryj hasło' : 'Pokaż hasło'}><Icon name={showPw ? 'eyeOff' : 'eye'} size={17} /></button>
             </div></div>
-          <button className="btn block" disabled={busy}>{busy ? 'Tworzenie…' : 'Załóż konto'}</button>
+          <label className="rodo-check">
+            <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} />
+            <span>Akceptuję <Link to="/regulamin" target="_blank">Regulamin</Link> i <Link to="/polityka-prywatnosci" target="_blank">Politykę prywatności</Link> (RODO).</span>
+          </label>
+          <button className="btn block" disabled={busy || !agree}>{busy ? 'Tworzenie…' : 'Załóż konto'}</button>
         </form>
         <div className="switch">Masz już konto? <Link to="/login">Zaloguj się</Link></div>
         <div className="switch" style={{ marginTop: 6 }}>Masz łowisko? <a href={`${PANEL_URL}/register`}>Konto dla właścicieli</a></div>

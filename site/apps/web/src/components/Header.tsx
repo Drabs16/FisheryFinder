@@ -2,6 +2,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useInvites } from '../context/InvitesContext';
 import Icon, { type IconName } from './Icon';
+import NotificationsBell from './NotificationsBell';
 
 const NAV: { to: string; label: string; icon: IconName; end?: boolean }[] = [
   { to: '/', label: 'Łowiska', icon: 'list', end: true },
@@ -45,6 +46,7 @@ export default function Header() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
           {user ? (
             <>
+              <NotificationsBell />
               <Link to="/profil" aria-label="Profil" style={{ width: 38, height: 38, borderRadius: '50%', background: 'var(--ff-accent)', color: 'var(--ff-primary)', display: 'grid', placeItems: 'center', fontWeight: 800, fontSize: 14 }}>{initials}</Link>
               <button onClick={async () => { await signOut(); nav('/'); }}
                 style={{ padding: '9px 16px', borderRadius: 'var(--ff-radius-pill)', border: '1px solid rgba(255,255,255,0.28)', background: 'transparent', color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>Wyloguj</button>

@@ -6,7 +6,7 @@ export type IconName =
   | 'fish' | 'map' | 'list' | 'user' | 'phone' | 'mail' | 'globe' | 'trophy'
   | 'cash' | 'people' | 'navigate' | 'arrowRight' | 'logout' | 'time' | 'water'
   | 'home' | 'bolt' | 'car' | 'droplet' | 'wifi' | 'flame' | 'bag' | 'logoFish' | 'sync'
-  | 'lock' | 'eye' | 'eyeOff';
+  | 'lock' | 'eye' | 'eyeOff' | 'bell';
 
 const P: Record<IconName, string> = {
   search: 'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.3-4.3',
@@ -14,6 +14,7 @@ const P: Record<IconName, string> = {
   star: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z',
   heart: 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z',
   calendar: 'M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z',
+  bell: 'M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0',
   sliders: 'M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6',
   funnel: 'M22 3H2l8 9.46V19l4 2v-8.54L22 3z',
   chevronDown: 'M6 9l6 6 6-6',
