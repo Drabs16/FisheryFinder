@@ -18,7 +18,7 @@
   --ff-primary: #1B4332; --ff-primary-light: #2D6A4F; --ff-accent: #52B788; --ff-accent-light: #95D5B2;
   --ff-green-50: #EAF4EF; --ff-green-100: #D6E9DF; --ff-green-700: #245741;
   --ff-bg: #F8F9FA; --ff-surface: #FFFFFF; --ff-surface-sunken: #F1F3F5; --ff-overlay: rgba(16,28,23,0.55);
-  --ff-text: #1A1A2E; --ff-text-secondary: #6B7280; --ff-text-tertiary: #9CA3AF;
+  --ff-text: #16182B; --ff-text-secondary: #45505F; --ff-text-tertiary: #6A7482;
   --ff-border: #E5E7EB; --ff-border-strong: #D1D5DB;
   --ff-success: #10B981; --ff-success-bg: #E7F7F0; --ff-error: #EF4444; --ff-error-bg: #FDECEC;
   --ff-warning: #F59E0B; --ff-warning-bg: #FEF3E2; --ff-water: #1E88E5; --ff-water-bg: #E7F1FD;
@@ -45,7 +45,7 @@
   --text-body: var(--ff-weight-regular) 16px/1.5 var(--ff-font-sans);
   --text-body-sm: var(--ff-weight-regular) 14px/1.5 var(--ff-font-sans);
   --text-label: var(--ff-weight-semibold) 14px/1.25 var(--ff-font-sans);
-  --text-caption: var(--ff-weight-medium) 12px/1.25 var(--ff-font-sans);
+  --text-caption: var(--ff-weight-semibold) 12px/1.25 var(--ff-font-sans);
   --text-h4: var(--ff-weight-bold) 24px/1.25 var(--ff-font-sans);
 }
 @media (prefers-reduced-motion: reduce) { :root { --ff-dur-fast: 0ms; --ff-dur-base: 0ms; --ff-dur-slow: 0ms; } }
